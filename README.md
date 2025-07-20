@@ -32,7 +32,7 @@ Untuk menjalankan proyek NihonMatch secara lokal di komputer Anda:
 1.  **Clone the repository:**
     Buka terminal atau command prompt Anda, lalu jalankan perintah berikut:
     ```bash
-    git clone [https://github.com/lvkiimm/NihonMatch.git](https://github.com/lvkiimm/NihonMatch.git)
+    git clone [https://github.com/lvkimm/NihonMatch.git](https://github.com/lvkimm/NihonMatch.git)
     ```
 
 2.  **Navigate to the project directory:**
