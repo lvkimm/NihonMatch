@@ -17,7 +17,7 @@ Proyek ini memenuhi kriteria "Mini Games" Capstone Project karena memiliki logik
     * `Noto Sans JP`: Digunakan secara spesifik untuk karakter Jepang (Hiragana/Katakana/Kanji) untuk memastikan render yang akurat, kejelasan, dan estetika yang sesuai.
 * **HTML Audio API:** Diintegrasikan untuk menyediakan berbagai efek suara yang memperkaya pengalaman bermain game dan memberikan *feedback* audio kepada pemain.
 * **Git & GitHub:** Digunakan untuk sistem kontrol versi, memungkinkan pelacakan perubahan kode, kolaborasi, dan hosting *source code* proyek.
-* **Netlify/Vercel/Firebase (Planned):** Akan digunakan sebagai platform deployment untuk menghosting aplikasi web statis ini, membuatnya dapat diakses secara publik.
+* **Vercel:** Akan digunakan sebagai platform deployment untuk menghosting aplikasi web statis ini, membuatnya dapat diakses secara publik.
 
 ## Features
 * **Interactive Card Matching:** Fitur ini memungkinkan pemain untuk membalik kartu dengan animasi transisi yang halus. Sistem pencocokan dirancang untuk menghubungkan kartu yang menampilkan **gambar benda dan teks Jepang (Hiragana/Katakana)** dengan kartu pasangannya yang berisi **arti kata dalam bahasa Inggris dan cara membacanya (Romaji)**.
