@@ -1,121 +1,114 @@
-/* General styles */
+:root {
+    --primary: #4CAF50;
+    --primary-dark: #2E7D32;
+    --bg-color: #6c9f68;
+    --yellow-notice: #FFEB3B;
+}
+
 body {
-    font-family: 'Georgia', serif;
-    margin: 0;
-    padding: 0;
-    background-color: #6c9f68;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
+    margin: 0; font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    display: flex; justify-content: center; align-items: center; min-height: 100vh;
 }
 
 .game-container {
-    text-align: center;
-    width: 90%;
-    max-width: 800px;
-    background-color: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    background: white; width: 90%; max-width: 800px; padding: 30px;
+    border-radius: 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    text-align: center; display: flex; flex-direction: column;
 }
 
-.instructions {
-    font-size: 18px;
+/* --- DROPDOWN --- */
+.dropdown-wrapper { position: relative; width: 100%; margin: 15px 0; }
+.pretty-dropdown {
+    width: 100%; padding: 15px; font-size: 1rem; border-radius: 12px;
+    border: 2px solid var(--primary); background: #f9f9f9; cursor: pointer;
+    appearance: none; font-weight: 600;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234CAF50%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto;
+}
+
+/* --- YELLOW BEEPING NOTICE --- */
+.preview-text {
+    background: var(--yellow-notice); color: #333; padding: 12px; border-radius: 12px;
+    font-weight: 800; margin-bottom: 20px; display: none; border: 3px solid #FBC02D;
+    animation: beep 0.8s infinite alternate;
+}
+@keyframes beep { from { transform: scale(1); } to { transform: scale(1.05); } }
+
+/* --- BUTTONS --- */
+.btn-primary-large {
+    background: var(--primary); color: white; border: none; padding: 16px;
+    font-size: 1.2rem; font-weight: 700; border-radius: 12px; width: 100%;
+    box-shadow: 0 4px 0 var(--primary-dark); cursor: pointer; transition: 0.2s;
+}
+.btn-primary-large:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+.btn-game, .btn-popup {
+    background: var(--primary); color: white; border: none; padding: 10px 20px;
+    border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;
+}
+.btn-game:hover, .btn-popup:hover { background: var(--primary-dark); filter: brightness(90%); }
+
+.game-board { 
+    display: grid; 
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 12px; 
+    margin-top: 30px; 
     margin-bottom: 20px;
-    color: #333;
+}
+@media (max-width: 600px) { .game-board { grid-template-columns: repeat(3, 1fr); } }
+
+.card { 
+    aspect-ratio: 3/4; 
+    perspective: 1000px; 
+    cursor: pointer; 
+}
+.card-inner { 
+    position: relative; width: 100%; height: 100%; 
+    transition: transform 0.6s; 
+    transform-style: preserve-3d; 
+}
+.card.flipped .card-inner { 
+    transform: rotateY(180deg); 
+}
+.card-back, .card-front { 
+    position: absolute; width: 100%; height: 100%; 
+    backface-visibility: hidden; 
+    border-radius: 10px; 
 }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    margin: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+.card-back { 
+    background: #3498db url('assets/images/card_back.png') center/cover no-repeat;
+    z-index: 2;
+    transform: rotateY(0deg); 
 }
 
-button:hover {
-    background-color: #45a049;
+.card-front { 
+    background: white; 
+    transform: rotateY(180deg); 
+    display: flex; align-items: center; justify-content: center; 
+    border: 2px solid #eee; 
 }
+.card-front img { width: 85%; }
 
-#game-board {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
-    gap: 10px;
-    margin-top: 20px;
-}
+.card.matched { opacity: 0.4; pointer-events: none; transform: scale(0.95); transition: 0.5s; }
 
-.card {
-    background-color: #3498db;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%; /* Maintain aspect ratio */
-    transition: transform 0.3s;
-    z-index: 1; /* Ensure cards stack correctly */
+/* --- POPUP & SCORE --- */
+.popup-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center;
+    z-index: 1000; backdrop-filter: blur(8px);
 }
+.popup-content {
+    background: white; padding: 40px; border-radius: 30px; text-align: center;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.3); max-width: 450px;
+}
+.popup-icon-star { font-size: 80px; color: #FFD700; filter: drop-shadow(0 0 10px #FFD700); }
+.popup-icon-red { font-size: 80px; }
 
-.card:hover {
-    transform: scale(1.05);
+.final-score-badge {
+    background: var(--yellow-notice); color: #333; font-size: 1.8rem; font-weight: 800;
+    padding: 10px 30px; border-radius: 50px; display: inline-block;
+    margin: 15px 0; border: 3px solid #FBC02D; box-shadow: 0 4px 0 #FBC02D;
 }
-
-.card img {
-    width: 100%;
-    height: auto;
-    display: none; /* Initially hidden */
-    border-radius: 10px;
-}
-
-.card .card-back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('assets/images/card_back.png');
-    background-size: cover;
-    border-radius: 10px;
-}
-
-.card.flipped .card-back {
-    display: none; /* Hide back when flipped */
-}
-
-.card.flipped .card-front {
-    display: block; /* Show front when flipped */
-}
-
-.card.matched {
-    opacity: 0.5; /* Dim matched cards */
-    pointer-events: none; /* Disable clicks */
-    transition: opacity 0.3s; /* Smooth transition for dimming */
-}
-
-#score-container, #timer-container {
-    margin-top: 20px;
-    font-size: 20px;
-    color: #333;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    #game-board {
-        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on tablet */
-    }
-}
-
-@media (max-width: 480px) {
-    #game-board {
-        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on mobile */
-    }
-}
+.popup-buttons { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
