@@ -1,179 +1,170 @@
-// Game setup and assets
-const cards = [
-    { name: 'inu1', img: 'assets/images/inu1.png', text: 'いぬ', meaning: 'Dog', romaji: 'inu' },
-    { name: 'inu2', img: 'assets/images/inu2.png', text: 'Dog', meaning: 'Dog', romaji: 'inu' },
-    { name: 'mizu1', img: 'assets/images/mizu1.png', text: 'みず', meaning: 'Water', romaji: 'mizu' },
-    { name: 'mizu2', img: 'assets/images/mizu2.png', text: 'Water', meaning: 'Water', romaji: 'mizu' },
-    { name: 'neko1', img: 'assets/images/neko1.png', text: 'ねこ', meaning: 'Cat', romaji: 'neko' },
-    { name: 'neko2', img: 'assets/images/neko2.png', text: 'Cat', meaning: 'Cat', romaji: 'neko' },
-    { name: 'ramen1', img: 'assets/images/ramen1.png', text: 'らーめん', meaning: 'Ramen', romaji: 'ramen' },
-    { name: 'ramen2', img: 'assets/images/ramen2.png', text: 'Ramen', meaning: 'Ramen', romaji: 'ramen' },
-    { name: 'sakura1', img: 'assets/images/sakura1.png', text: 'さくら', meaning: 'Cherry Blossom', romaji: 'sakura' },
-    { name: 'sakura2', img: 'assets/images/sakura2.png', text: 'Cherry Blossom', meaning: 'Cherry Blossom', romaji: 'sakura' },
-    { name: 'sushi1', img: 'assets/images/sushi1.png', text: 'すし', meaning: 'Sushi', romaji: 'sushi' },
-    { name: 'sushi2', img: 'assets/images/sushi2.png', text: 'Sushi', meaning: 'Sushi', romaji: 'sushi' },
-    { name: 'tamago1', img: 'assets/images/tamago1.png', text: 'たまご', meaning: 'Egg', romaji: 'tamago' },
-    { name: 'tamago2', img: 'assets/images/tamago2.png', text: 'Egg', meaning: 'Egg', romaji: 'tamago' },
-    { name: 'fuji1', img: 'assets/images/fuji1.png', text: 'ふじ', meaning: 'Mt. Fuji', romaji: 'fujisan' },
-    { name: 'fuji2', img: 'assets/images/fuji2.png', text: 'Mt. Fuji', meaning: 'Mt. Fuji', romaji: 'fujisan' }
-];
+const gameData = {
+    1: [{ name: 'tamago', i1: 'lvl1_tamago1.png', i2: 'lvl1_tamago2.png' }, { name: 'neko', i1: 'lvl1_neko1.png', i2: 'lvl1_neko2.png' }, { name: 'sakura', i1: 'lvl1_sakura1.png', i2: 'lvl1_sakura2.png' }, { name: 'sushi', i1: 'lvl1_sushi1.png', i2: 'lvl1_sushi2.png' }, { name: 'mizu', i1: 'lvl1_mizu1.png', i2: 'lvl1_mizu2.png' }, { name: 'ramen', i1: 'lvl1_ramen1.png', i2: 'lvl1_ramen2.png' }, { name: 'terebi', i1: 'lvl1_terebi1.png', i2: 'lvl1_terebi2.png' }, { name: 'cake', i1: 'lvl1_cake1.png', i2: 'lvl1_cake2.png' }, { name: 'coffee', i1: 'lvl1_coffee1.png', i2: 'lvl1_coffee2.png' }],
+    2: [{ name: 'gakkou', i1: 'lvl2_gakkou1.png', i2: 'lvl2_gakkou2.png' }, { name: 'ie', i1: 'lvl2_ie1.png', i2: 'lvl2_ie2.png' }, { name: 'eki', i1: 'lvl2_eki1.png', i2: 'lvl2_eki2.png' }, { name: 'yama', i1: 'lvl2_yama1.png', i2: 'lvl2_yama2.png' }, { name: 'ginkou', i1: 'lvl2_ginkou1.png', i2: 'lvl2_ginkou2.png' }, { name: 'byouin', i1: 'lvl2_byouin1.png', i2: 'lvl2_byouin2.png' }, { name: 'ichi', i1: 'lvl2_ichi1.png', i2: 'lvl2_ichi2.png' }, { name: 'go', i1: 'lvl2_go1.png', i2: 'lvl2_go2.png' }, { name: 'hachi', i1: 'lvl2_hachi1.png', i2: 'lvl2_hachi2.png' }],
+    3: [{ name: 'taberu', i1: 'lvl3_taberu1.png', i2: 'lvl3_taberu2.png' }, { name: 'nomu', i1: 'lvl3_nomu1.png', i2: 'lvl3_nomu2.png' }, { name: 'miru', i1: 'lvl3_miru1.png', i2: 'lvl3_miru2.png' }, { name: 'kiku', i1: 'lvl3_kiku1.png', i2: 'lvl3_kiku2.png' }, { name: 'hanasu', i1: 'lvl3_hanasu1.png', i2: 'lvl3_hanasu2.png' }, { name: 'ookii', i1: 'lvl3_ookii1.png', i2: 'lvl3_ookii2.png' }, { name: 'chiisai', i1: 'lvl3_chiisai1.png', i2: 'lvl3_chiisai2.png' }, { name: 'suki', i1: 'lvl3_suki1.png', i2: 'lvl3_suki2.png' }, { name: 'shizuka', i1: 'lvl3_shizuka1.png', i2: 'lvl3_shizuka2.png' }]
+};
 
-// Variables for game state
+let currentLevel = 1;
 let flippedCards = [];
-let matchedCards = [];
-let score = 0;
-let gameTimer;
-let timeLeft = 120;
+let matchedCount = 0;
+let timer;
+let timeLeft = 0;
 let isPaused = false;
+let isPreviewing = false;
 
-// Elements
-const startButton = document.getElementById('start-btn');
-const pauseButton = document.getElementById('pause-btn');
-const restartButton = document.getElementById('restart-btn');
-const gameBoard = document.getElementById('game-board');
+const landingPage = document.getElementById('landing-page');
+const gameScreen = document.getElementById('game-screen');
+const board = document.getElementById('game-board');
 const scoreDisplay = document.getElementById('score');
 const timerDisplay = document.getElementById('timer');
+const previewOverlay = document.getElementById('preview-overlay');
 
-// Audio elements
-const cardFlipAudio = new Audio('assets/audios/cardflip_1.mp3');
-const correctMatchAudio = new Audio('assets/audios/correct_match.mp3');
-const wrongMatchAudio = new Audio('assets/audios/wrong_match.mp3');
-const gameOverAudio = new Audio('assets/audios/gameover.mp3');
-const winAudio = new Audio('assets/audios/win.mp3');
-const startGameAudio = new Audio('assets/audios/startgame.mp3');
-const pauseResumeAudio = new Audio('assets/audios/pause_resume.mp3');
+const playAudio = (id) => {
+    const audio = document.getElementById(id);
+    if (audio) { audio.currentTime = 0; audio.play().catch(e => console.log(e)); }
+};
 
-// Shuffle the cards
-function shuffleCards() {
-    return [...cards].sort(() => Math.random() - 0.5); // Shuffle
+document.getElementById('start-btn').addEventListener('click', () => {
+    currentLevel = parseInt(document.getElementById('level-dropdown').value);
+    initGame();
+});
+
+function initGame() {
+    landingPage.style.display = 'none';
+    gameScreen.style.display = 'flex';
+    document.querySelectorAll('.popup-overlay').forEach(p => p.style.display = 'none');
+    document.getElementById('current-level-title').textContent = `Level ${currentLevel}`;
+    
+    timeLeft = (currentLevel === 1) ? 120 : (currentLevel === 2) ? 180 : 300;
+    matchedCount = 0;
+    flippedCards = [];
+    isPaused = false;
+    isPreviewing = true;
+    document.getElementById('pause-btn').textContent = 'Pause';
+    
+    updateScore();
+    updateTimerDisplay();
+    renderBoard(true); 
+    
+    playAudio('audio-start');
+    previewOverlay.style.display = 'block';
+
+    setTimeout(() => {
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('flipped'));
+        previewOverlay.style.display = 'none';
+        isPreviewing = false;
+        startTimer();
+    }, 5000);
 }
 
-// Start the game
-startButton.addEventListener('click', startGame);
-
-// Restart the game
-restartButton.addEventListener('click', startGame);
-
-// Function to start the game
-function startGame() {
-    startGameAudio.play(); // Play start game audio
-    startButton.style.display = 'none'; // Hide Start Game button
-    pauseButton.style.display = 'inline-block';
-    restartButton.style.display = 'inline-block'; // Show Restart button
-    score = 0;
-    scoreDisplay.textContent = `${score}/8`; // Show score as "X/8"
-    gameBoard.innerHTML = '';  // Clear game board
-    flippedCards = [];
-    matchedCards = [];
-    timeLeft = 120;
-    timerDisplay.textContent = '02:00';
-    
-    const shuffledCards = shuffleCards();
-    
-    shuffledCards.forEach((card) => {
-        const cardElement = document.createElement('div');
-        cardElement.classList.add('card');
-        cardElement.dataset.name = card.name;
-
-        const cardBack = document.createElement('div');
-        cardBack.classList.add('card-back');
-
-        const cardFront = document.createElement('img');
-        cardFront.src = card.img;
-        cardFront.classList.add('card-front');
-
-        cardElement.appendChild(cardBack);
-        cardElement.appendChild(cardFront);
-        
-        cardElement.addEventListener('click', () => flipCard(cardElement, card));
-        gameBoard.appendChild(cardElement);
+function renderBoard(showPreview) {
+    board.innerHTML = '';
+    const levelPairs = gameData[currentLevel];
+    const cards = [];
+    levelPairs.forEach(pair => {
+        cards.push({ name: pair.name, img: pair.i1 });
+        cards.push({ name: pair.name, img: pair.i2 });
     });
     
-    startTimer();
-}
-
-// Flip card logic
-function flipCard(cardElement, card) {
-    if (flippedCards.length < 2 && !cardElement.classList.contains('flipped') && !isPaused) {
-        cardElement.classList.add('flipped');  // Add flipped class to show front of the card
-        const cardFront = cardElement.querySelector('.card-front');
-        cardFront.style.display = 'block';  // Reveal the front of the card
-        cardFlipAudio.play();
-        
-        flippedCards.push({ cardElement, card });
-        
-        if (flippedCards.length === 2) {
-            checkMatch();
-        }
+    for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
     }
+    
+    cards.forEach(cardData => {
+        const cardObj = document.createElement('div');
+        cardObj.classList.add('card');
+        if (showPreview) cardObj.classList.add('flipped');
+        cardObj.innerHTML = `
+            <div class="card-inner">
+                <div class="card-back"></div>
+                <div class="card-front"><img src="assets/images/${cardData.img}"></div>
+            </div>
+        `;
+        cardObj.addEventListener('click', () => flipCard(cardObj, cardData));
+        board.appendChild(cardObj);
+    });
 }
 
-// Check if cards match
-function checkMatch() {
-    const [firstCard, secondCard] = flippedCards;
-    const isMatch = firstCard.card.name.slice(0, -1) === secondCard.card.name.slice(0, -1); // Compare name without the last character
-
-    if (isMatch) {
-        // Add matched class to both cards
-        firstCard.cardElement.classList.add('matched');
-        secondCard.cardElement.classList.add('matched');
-        matchedCards.push(firstCard, secondCard);
-        score++; // Increase score by 1 for each match
-        scoreDisplay.textContent = `${score}/8`; // Update score display
-        correctMatchAudio.play();
-        flippedCards = [];
-        
-        // Check if all pairs are matched
-        if (matchedCards.length === cards.length) {
-            clearInterval(gameTimer); // Stop the timer
-            winAudio.play();
-            alert('おめでとう！ You Won!');
-            restartButton.style.display = 'inline-block'; // Show restart button
-            startButton.disabled = false;
-        }
-    } else {
-        wrongMatchAudio.play();
-        setTimeout(() => {
-            firstCard.cardElement.classList.remove('flipped');
-            secondCard.cardElement.classList.remove('flipped');
-            const cardFront1 = firstCard.cardElement.querySelector('.card-front');
-            cardFront1.style.display = 'none';  // Hide front after a delay
-            const cardFront2 = secondCard.cardElement.querySelector('.card-front');
-            cardFront2.style.display = 'none';  // Hide front after a delay
+function flipCard(cardObj, data) {
+    if (isPaused || isPreviewing || flippedCards.length === 2 || cardObj.classList.contains('flipped')) return;
+    cardObj.classList.add('flipped');
+    playAudio('audio-flip');
+    flippedCards.push({ cardObj, data });
+    if (flippedCards.length === 2) {
+        const [c1, c2] = flippedCards;
+        if (c1.data.name === c2.data.name) {
+            matchedCount++;
+            c1.cardObj.classList.add('matched');
+            c2.cardObj.classList.add('matched');
+            updateScore();
+            playAudio('audio-correct');
             flippedCards = [];
-        }, 1000);
+            if (matchedCount === 9) showEndPopup('win-popup');
+        } else {
+            playAudio('audio-wrong');
+            setTimeout(() => {
+                c1.cardObj.classList.remove('flipped');
+                c2.cardObj.classList.remove('flipped');
+                flippedCards = [];
+            }, 1000);
+        }
     }
 }
 
-// Timer countdown
+function showEndPopup(popupId) {
+    clearInterval(timer);
+    const popup = document.getElementById(popupId);
+    if (popupId === 'win-popup') {
+        popup.querySelector('.end-score-win').textContent = matchedCount;
+        playAudio('audio-win');
+        setTimeout(() => playAudio('audio-score'), 800);
+        const nextBtn = document.getElementById('next-level-btn');
+        if (currentLevel < 3) {
+            nextBtn.style.display = 'inline-block';
+            nextBtn.onclick = () => { currentLevel++; initGame(); };
+        } else { nextBtn.style.display = 'none'; }
+    } else {
+        popup.querySelector('.end-score').textContent = matchedCount;
+        playAudio('audio-gameover');
+        setTimeout(() => playAudio('audio-score'), 500);
+    }
+    popup.style.display = 'flex';
+}
+
 function startTimer() {
-    gameTimer = setInterval(() => {
+    clearInterval(timer);
+    timer = setInterval(() => {
         if (!isPaused) {
             timeLeft--;
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerDisplay.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            if (timeLeft <= 0) {
-                clearInterval(gameTimer);
-                gameOverAudio.play();
-                alert('Game Over! You took too long!');
-                restartButton.style.display = 'inline-block'; // Show restart button
-                startButton.style.display = 'inline-block'; // Show Start Game button
-            }
+            updateTimerDisplay();
+            if (timeLeft <= 0) showEndPopup('game-over-popup');
         }
     }, 1000);
 }
 
-// Pause and Resume functionality
-pauseButton.addEventListener('click', () => {
+function updateTimerDisplay() {
+    const min = Math.floor(timeLeft / 60);
+    const sec = timeLeft % 60;
+    timerDisplay.textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+}
+
+function updateScore() {
+    scoreDisplay.textContent = `${matchedCount}/9`;
+}
+
+document.getElementById('pause-btn').addEventListener('click', (e) => {
     isPaused = !isPaused;
-    if (isPaused) {
-        pauseResumeAudio.play(); // Play pause audio
-        pauseButton.textContent = 'Resume';
-        clearInterval(gameTimer);
-    } else {
-        pauseResumeAudio.play(); // Play resume audio
-        pauseButton.textContent = 'Pause';
-        startTimer();
-    }
+    playAudio('audio-pause');
+    e.target.textContent = isPaused ? 'Resume' : 'Pause';
 });
+
+document.getElementById('restart-game-btn').addEventListener('click', initGame);
+document.getElementById('menu-btn').addEventListener('click', resetToMenu);
+
+function resetToMenu() {
+    clearInterval(timer);
+    landingPage.style.display = 'flex';
+    gameScreen.style.display = 'none';
+    document.querySelectorAll('.popup-overlay').forEach(p => p.style.display = 'none');
+}
