@@ -3,36 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NihonMatch - Memory Game</title>
+    <title>NihonMatch - Japanese Memory Game &copy; lvkiimm</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
+    <div id="landing-page" class="game-container">
         <h1>NihonMatch</h1>
-        <p class="instructions">Match the images with their meanings and readings!</p>
-        <p class="encouragement">がんばれ！ ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧</p> <button id="start-btn">Start Game</button>
-        <button id="pause-btn" style="display:none;">Pause</button>
-        <button id="restart-btn" style="display:none;">Restart</button>
-        <div id="game-board" class="game-board"></div>
-        <div id="score-container">
-            <span>Score: <span id="score">0/8</span></span>
+        <p class="instructions">Match Japanese characters with their English meanings!</p>
+        <p class="encouragement">がんばれ！ ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧</p> 
+        
+        <div class="level-select-wrapper">
+            <label for="level-dropdown">Select Proficiency Level:</label>
+            <div class="dropdown-wrapper">
+                <select id="level-dropdown" class="pretty-dropdown">
+                    <option value="1">Level 1: Basic (Hiragana/Katakana) - 2 Mins</option>
+                    <option value="2">Level 2: Daily Life (N5 Kanji) - 3 Mins</option>
+                    <option value="3">Level 3: Advanced (Verbs/Adjectives) - 5 Mins</option>
+                </select>
+            </div>
         </div>
-        <div id="timer-container">
-            <span>Time Left: <span id="timer">02:00</span></span>
+        <button id="start-btn" class="btn-primary-large">Start Game</button>
+    </div>
+
+    <div id="game-screen" class="game-container" style="display:none;">
+        <div id="preview-overlay" class="preview-text">MEMORIZE THE CARDS!</div>
+        
+        <div class="game-header">
+            <h2 id="current-level-title">Level 1</h2>
+            <div class="game-controls">
+                <button id="pause-btn" class="btn-game">Pause</button>
+                <button id="restart-game-btn" class="btn-game">Restart</button>
+                <button id="menu-btn" class="btn-game">Menu</button>
+            </div>
+        </div>
+
+        <div id="game-board" class="game-board"></div>
+
+        <div class="game-footer">
+            <div id="score-container">Score: <span id="score">0/9</span></div>
+            <div id="timer-container">Time Left: <span id="timer">02:00</span></div>
         </div>
     </div>
 
-    <audio id="cardflip_1" src="assets/audios/cardflip_1.mp3"></audio>
-    <audio id="cardflip_2" src="assets/audios/cardflip_2.mp3"></audio>
-    <audio id="startgame" src="assets/audios/startgame.mp3"></audio>
-    <audio id="pause_resume" src="assets/audios/pause_resume.mp3"></audio>
-    <audio id="correct_match" src="assets/audios/correct_match.mp3"></audio>
-    <audio id="wrong_match" src="assets/audios/wrong_match.mp3"></audio>
-    <audio id="gameover" src="assets/audios/gameover.mp3"></audio>
-    <audio id="win" src="assets/audios/win.mp3"></audio>
+    <div id="game-over-popup" class="popup-overlay">
+        <div class="popup-content">
+            <div class="popup-icon-red">⏰</div>
+            <h3>Game Over!</h3>
+            <p>Your Final Score:</p>
+            <div class="final-score-badge"><span class="end-score">0</span>/9</div>
+            <div class="popup-buttons">
+                <button class="btn-popup" onclick="initGame()">Restart</button>
+                <button class="btn-popup" onclick="resetToMenu()">Back to Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="win-popup" class="popup-overlay">
+        <div class="popup-content">
+            <div class="popup-icon-star">⭐</div>
+            <h3>おめでとうございます!</h3>
+            <p>Level Cleared Successfully!</p>
+            <div class="final-score-badge">SCORE: <span class="end-score-win">0</span>/9</div>
+            <div class="popup-buttons">
+                <button id="next-level-btn" class="btn-popup">Next Level</button>
+                <button class="btn-popup" onclick="resetToMenu()">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audio-flip" src="assets/audios/cardflip_1.mp3"></audio>
+    <audio id="audio-correct" src="assets/audios/correct_match.mp3"></audio>
+    <audio id="audio-wrong" src="assets/audios/wrong_match.mp3"></audio>
+    <audio id="audio-win" src="assets/audios/win.mp3"></audio>
+    <audio id="audio-start" src="assets/audios/startgame.mp3"></audio>
+    <audio id="audio-pause" src="assets/audios/pause_resume.mp3"></audio>
+    <audio id="audio-gameover" src="assets/audios/gameover.mp3"></audio>
+    <audio id="audio-score" src="assets/audios/score.mp3"></audio>
 
     <script src="script.js"></script>
 </body>
